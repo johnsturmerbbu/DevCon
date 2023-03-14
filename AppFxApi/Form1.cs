@@ -65,7 +65,7 @@ namespace AppFxApi
             lbState.Text = ExactMatch[0].Values[6].ToString();
             lbCountry.Text = ExactMatch[0].Values[7].ToString();
             lbPostCode.Text = ExactMatch[0].Values[8].ToString();
-            LookupNickname(new Guid(lbID.Text));
+            lbNickName.Text = LookupNickname(new Guid(lbID.Text));
         }
         private string LookupNickname(Guid ConstituentId)
         {
@@ -73,11 +73,10 @@ namespace AppFxApi
             AdHocQueryProcessRequest qReq = new AdHocQueryProcessRequest();
             AdHocQueryProcessReply qReply;
             qReq.ClientAppInfo = GetRequestHeader();
-            qReq.QueryViewID = new Guid("2BB763B5-7062-4988-95D9-ACA7041AB735");
-            qReq.SelectFields = new AdHocQuerySelectField[2]();
-            qReq.SelectFields[0] = new AdHocQuerySelectField();
-            qReq.SelectFields[0].ColumnName = "NICKNAME";
-            
+            qReq.AdHocQueryID = new Guid("2bb763b5-7062-4988-95d9-aca7041ab735");
+            qReply = Service.AdHocQueryProcess(qReq);
+            var Nickname = from c in qReply.Output.Rows where c.Values[2].ToString() == ConstituentId.ToString() select c.Values[1];
+            result = Nickname.ToArray<string>()[0];
             return result;
         }
 
