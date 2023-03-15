@@ -21,7 +21,7 @@ namespace AppFxApi
         }
 
         private AppFxWebService Service { get; set; }
-
+        private Guid ContextId { get; set; }
         private void InitAppFx()
         {
             this.tbOutputLog.Text += System.DateTime.Now.ToString() + "\t" + "Initializing Service" + "\r\n";
@@ -66,6 +66,8 @@ namespace AppFxApi
             lbCountry.Text = ExactMatch[0].Values[7].ToString();
             lbPostCode.Text = ExactMatch[0].Values[8].ToString();
             lbNickName.Text = LookupNickname(new Guid(lbID.Text));
+            tbNewNickName.Text = lbNickName.Text;
+            ContextId = new Guid(ExactMatch[0].Values[0].ToString());
         }
         private string LookupNickname(Guid ConstituentId)
         {
@@ -79,13 +81,40 @@ namespace AppFxApi
             result = Nickname.ToArray<string>()[0];
             return result;
         }
+        private bool UpdateNickname()
+        {
+            DataFormLoadRequest lReq = new DataFormLoadRequest();
+            DataFormSaveRequest sReq = new DataFormSaveRequest();
+            DataFormLoadReply lReply;
+            DataFormSaveReply sReply;
+            lReq.ClientAppInfo = GetRequestHeader();
+            lReq.ContextRecordID = ContextId.ToString();
+            lReq.RecordID = ContextId.ToString();
+            lReq.FormID = new Guid("788ab947-26ed-40c4-865e-8fe29577e593");
+            lReply = Service.DataFormLoad(lReq);
+            sReq = new DataFormSaveRequest();
+            sReq.ClientAppInfo = GetRequestHeader();
+            sReq.ID = lReq.RecordID;
+            sReq.ContextRecordID = lReq.ContextRecordID;
+            sReq.DataFormItem = lReply.DataFormItem;
+            sReq.DataFormItem.SetValue("NICKNAME", tbNewNickName.Text);
+            sReq.FormID = lReq.FormID;
+            sReply = Service.DataFormSave(sReq);
+            return false;
 
+
+        }
         private void btnSearch_Click(object sender, EventArgs e)
         {
             this.tbOutputLog.Text += System.DateTime.Now.ToString() + "\t" + "Executing Search" + "\r\n";
             InitAppFx();
             SearchByLookupId();
             this.tbOutputLog.Text += System.DateTime.Now.ToString() + "\t" + "Search Complete" + "\r\n";
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateNickname();
         }
     }
 }

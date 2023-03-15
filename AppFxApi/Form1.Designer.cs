@@ -40,6 +40,9 @@
             this.lbCountry = new System.Windows.Forms.Label();
             this.lbPostCode = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.tbNewNickName = new System.Windows.Forms.TextBox();
+            this.lblNewNickName = new System.Windows.Forms.Label();
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tbOutputLog
@@ -148,11 +151,40 @@
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // tbNewNickName
+            // 
+            this.tbNewNickName.Location = new System.Drawing.Point(105, 211);
+            this.tbNewNickName.Name = "tbNewNickName";
+            this.tbNewNickName.Size = new System.Drawing.Size(100, 20);
+            this.tbNewNickName.TabIndex = 12;
+            // 
+            // lblNewNickName
+            // 
+            this.lblNewNickName.AutoSize = true;
+            this.lblNewNickName.Location = new System.Drawing.Point(10, 214);
+            this.lblNewNickName.Name = "lblNewNickName";
+            this.lblNewNickName.Size = new System.Drawing.Size(80, 13);
+            this.lblNewNickName.TabIndex = 13;
+            this.lblNewNickName.Text = "New Nickname";
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Location = new System.Drawing.Point(212, 207);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(142, 23);
+            this.btnUpdate.TabIndex = 14;
+            this.btnUpdate.Text = "Update Nickname";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2039, 1140);
+            this.Controls.Add(this.btnUpdate);
+            this.Controls.Add(this.lblNewNickName);
+            this.Controls.Add(this.tbNewNickName);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.lbPostCode);
             this.Controls.Add(this.lbCountry);
@@ -186,6 +218,9 @@
         private System.Windows.Forms.Label lbCountry;
         private System.Windows.Forms.Label lbPostCode;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.TextBox tbNewNickName;
+        private System.Windows.Forms.Label lblNewNickName;
+        private System.Windows.Forms.Button btnUpdate;
     }
 }
 
