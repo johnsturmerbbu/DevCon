@@ -92,23 +92,24 @@ namespace AppFxApi
         }
         private bool UpdateNickname()
         {
-            DataFormLoadRequest lReq = new DataFormLoadRequest();
-            DataFormSaveRequest sReq = new DataFormSaveRequest();
-            DataFormLoadReply lReply;
-            DataFormSaveReply sReply;
-            lReq.ClientAppInfo = GetRequestHeader();
-            lReq.ContextRecordID = ContextId.ToString();
-            lReq.RecordID = ContextId.ToString();
-            lReq.FormID = new Guid("788ab947-26ed-40c4-865e-8fe29577e593");
-            lReply = Service.DataFormLoad(lReq);
-            sReq = new DataFormSaveRequest();
-            sReq.ClientAppInfo = GetRequestHeader();
-            sReq.ID = lReq.RecordID;
-            sReq.ContextRecordID = lReq.ContextRecordID;
-            sReq.DataFormItem = lReply.DataFormItem;
-            sReq.DataFormItem.SetValue("NICKNAME", tbNewNickName.Text);
-            sReq.FormID = lReq.FormID;
-            sReply = Service.DataFormSave(sReq);
+            BioEdit ConstUpdate = new BioEdit(ContextId);
+            //DataFormLoadRequest lReq = new DataFormLoadRequest();
+            //DataFormSaveRequest sReq = new DataFormSaveRequest();
+            //DataFormLoadReply lReply;
+            //DataFormSaveReply sReply;
+            //lReq.ClientAppInfo = GetRequestHeader();
+            //lReq.ContextRecordID = ContextId.ToString();
+            //lReq.RecordID = ContextId.ToString();
+            //lReq.FormID = new Guid("788ab947-26ed-40c4-865e-8fe29577e593");
+            //lReply = Service.DataFormLoad(lReq);
+            //sReq = new DataFormSaveRequest();
+            //sReq.ClientAppInfo = GetRequestHeader();
+            //sReq.ID = lReq.RecordID;
+            //sReq.ContextRecordID = lReq.ContextRecordID;
+            //sReq.DataFormItem = lReply.DataFormItem;
+            //sReq.DataFormItem.SetValue("NICKNAME", tbNewNickName.Text);
+            //sReq.FormID = lReq.FormID;
+            //sReply = Service.DataFormSave(sReq);
             return false;
 
 
