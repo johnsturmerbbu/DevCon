@@ -45,18 +45,27 @@ namespace AppFxApi
 
         private void SearchByLookupId()
         {
-            SearchListLoadRequest lReq = new SearchListLoadRequest();
-            SearchListLoadReply lReply = new SearchListLoadReply();
-            DataFormFieldValueSet FVSet = new DataFormFieldValueSet();
-            DataFormItem DFI = new DataFormItem();
-            lReq.ClientAppInfo = GetRequestHeader();
-            lReq.SearchListID = new Guid("fdf9d631-5277-4300-80b3-fdf5fb8850ec");
-            FVSet.Add(new DataFormFieldValue("ONLYPRIMARYADDRESS", true));
-            FVSet.Add(new DataFormFieldValue("CONSTITUENTQUICKFIND", tbLookupId.Text));
-            DFI.Values = FVSet;
-            lReq.Filter = DFI;
-            lReply = Service.SearchListLoad(lReq);
-            var ExactMatch = (from c in lReply.Output.Rows where c.Values[1] == tbLookupId.Text select c).ToArray<ListOutputRow>();
+
+            LookupIdSearch lookup = new LookupIdSearch();
+            lookup.URL = @"https://localhost/bbappfxSDKDev/Appfxwebservice.asmx?DatabaseName=BBInfinity";
+            lookup.UserCredential = CredentialCache.DefaultCredentials;
+            lookup.DBToUse = "BBInfinity";
+            lookup.FieldValueSet.Add(new DataFormFieldValue("ONLYPRIMARYADDRESS", true));
+            lookup.FieldValueSet.Add(new DataFormFieldValue("CONSTITUENTQUICKFIND", tbLookupId.Text));
+            lookup.ExecuteSearch();
+            var ExactMatch = (from c in lookup.ReplyObj.Output.Rows where c.Values[1] == tbLookupId.Text select c).ToArray<ListOutputRow>();
+            //SearchListLoadRequest lReq = new SearchListLoadRequest();
+            //SearchListLoadReply lReply = new SearchListLoadReply();
+            //DataFormFieldValueSet FVSet = new DataFormFieldValueSet();
+            //DataFormItem DFI = new DataFormItem();
+            //lReq.ClientAppInfo = GetRequestHeader();
+            //lReq.SearchListID = new Guid("fdf9d631-5277-4300-80b3-fdf5fb8850ec");
+            //FVSet.Add(new DataFormFieldValue("ONLYPRIMARYADDRESS", true));
+            //FVSet.Add(new DataFormFieldValue("CONSTITUENTQUICKFIND", tbLookupId.Text));
+            //DFI.Values = FVSet;
+            //lReq.Filter = DFI;
+            //lReply = Service.SearchListLoad(lReq);
+            //var ExactMatch = (from c in lReply.Output.Rows where c.Values[1] == tbLookupId.Text select c).ToArray<ListOutputRow>();
 
             lbID.Text = ExactMatch[0].Values[0].ToString();
             lbName.Text = ExactMatch[0].Values[10].ToString();

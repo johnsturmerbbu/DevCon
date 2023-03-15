@@ -62,7 +62,11 @@ namespace BBAppFxLib
     {
         public DataFormFieldValueSet FieldValueSet { get; private set; }
         public DataFormItem FormItem { get; private set; }
-        public FormFilterBase(Guid ObjId) : base(ObjId) { }
+        public FormFilterBase(Guid ObjId) : base(ObjId)
+        {
+            FieldValueSet = new DataFormFieldValueSet();
+            FormItem = new DataFormItem();
+        }
         public void ExecuteLoad()
         {
             FormItem.Values = FieldValueSet;
