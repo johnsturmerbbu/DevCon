@@ -60,8 +60,8 @@ namespace BBAppFxLib
 
     public class FormFilterBase:BBAppFxBase
     {
-        public DataFormFieldValueSet FieldValueSet { get; private set; }
-        public DataFormItem FormItem { get; private set; }
+        public DataFormFieldValueSet FieldValueSet { get;  set; }
+        public DataFormItem FormItem { get; protected set; }
         public FormFilterBase(Guid ObjId) : base(ObjId)
         {
             FieldValueSet = new DataFormFieldValueSet();
@@ -161,6 +161,8 @@ namespace BBAppFxLib
             InitAppFx();
             ReqObj.ClientAppInfo = GetRequestHeader();
             ReplyObj = Service.DataFormLoad(ReqObj);
+            FormItem = ReplyObj.DataFormItem;
+            FieldValueSet = FormItem.Values;
 
         }
     }
@@ -172,15 +174,16 @@ namespace BBAppFxLib
         public WriteableDataFormBase(Guid DataFormId, string ContextId)
             : base(DataFormId, ContextId)
         {
-            LoadDataForm();
+            //LoadDataForm();
         }
         public WriteableDataFormBase(Guid DataFormId)
             : base(DataFormId)
         {
-            LoadDataForm();
+            //LoadDataForm();
         }
         public void SaveDataForm()
         {
+            FormItem.Values = FieldValueSet;
             FormItem.Values = FieldValueSet;
             sReqObj.DataFormItem = FormItem;
             sReqObj.ContextRecordID = ContextRecordId;
@@ -192,8 +195,8 @@ namespace BBAppFxLib
         public override void LoadDataForm()
         {
             sReqObj = new DataFormSaveRequest();
-            sReqObj.DataFormItem = FormItem;
             base.LoadDataForm();
+            sReqObj.DataFormItem = FormItem;
 
         }
     }

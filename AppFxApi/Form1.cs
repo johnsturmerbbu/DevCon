@@ -93,6 +93,13 @@ namespace AppFxApi
         private bool UpdateNickname()
         {
             BioEdit ConstUpdate = new BioEdit(ContextId);
+            ConstUpdate.URL = @"https://localhost/bbappfxSDKDev/Appfxwebservice.asmx?DatabaseName=BBInfinity";
+            ConstUpdate.UserCredential = CredentialCache.DefaultCredentials;
+            ConstUpdate.DBToUse = "BBInfinity";
+            ConstUpdate.LoadDataForm();
+            ConstUpdate.FieldValueSet.SetValue("NICKNAME", tbNewNickName.Text);
+            ConstUpdate.SaveDataForm();
+            SearchByLookupId();
             //DataFormLoadRequest lReq = new DataFormLoadRequest();
             //DataFormSaveRequest sReq = new DataFormSaveRequest();
             //DataFormLoadReply lReply;
