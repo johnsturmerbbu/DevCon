@@ -72,6 +72,21 @@ namespace BBAppFxLib
             FormItem.Values = FieldValueSet;
             InitAppFx();
         }
+        protected void PopulateFieldValues()
+        {
+            var props = this.GetType().GetProperties().Where<PropertyInfo>(prop => prop.GetCustomAttribute<FormFieldProperty>(true) != null);
+            PropertyInfo[] PropList = props.ToArray<PropertyInfo>();
+            foreach (PropertyInfo p in PropList)
+            {
+                if (p.GetCustomAttribute<DoNotDefaultField>() == null)
+                {
+                    if (p.PropertyType == typeof(String) && p.GetValue(this) == null)
+                        FieldValueSet.SetValue(p.Name, string.Empty);
+                    else
+                        FieldValueSet.SetValue(p.Name, p.GetValue(this));
+                }
+            }
+        }
 
     }
     public class ContextFormFilterBase : FormFilterBase
