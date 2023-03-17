@@ -50,33 +50,20 @@ namespace AppFxApi
             lookup.URL = @"https://localhost/bbappfxSDKDev/Appfxwebservice.asmx?DatabaseName=BBInfinity";
             lookup.UserCredential = CredentialCache.DefaultCredentials;
             lookup.DBToUse = "BBInfinity";
-            lookup.FieldValueSet.Add(new DataFormFieldValue("ONLYPRIMARYADDRESS", true));
-            lookup.FieldValueSet.Add(new DataFormFieldValue("CONSTITUENTQUICKFIND", tbLookupId.Text));
+            lookup.ONLYPRIMARYADDRESS = true;
+            lookup.CONSTITUENTQUICKFIND = tbLookupId.Text;
             lookup.ExecuteSearch();
-            var ExactMatch = (from c in lookup.ReplyObj.Output.Rows where c.Values[1] == tbLookupId.Text select c).ToArray<ListOutputRow>();
-            //SearchListLoadRequest lReq = new SearchListLoadRequest();
-            //SearchListLoadReply lReply = new SearchListLoadReply();
-            //DataFormFieldValueSet FVSet = new DataFormFieldValueSet();
-            //DataFormItem DFI = new DataFormItem();
-            //lReq.ClientAppInfo = GetRequestHeader();
-            //lReq.SearchListID = new Guid("fdf9d631-5277-4300-80b3-fdf5fb8850ec");
-            //FVSet.Add(new DataFormFieldValue("ONLYPRIMARYADDRESS", true));
-            //FVSet.Add(new DataFormFieldValue("CONSTITUENTQUICKFIND", tbLookupId.Text));
-            //DFI.Values = FVSet;
-            //lReq.Filter = DFI;
-            //lReply = Service.SearchListLoad(lReq);
-            //var ExactMatch = (from c in lReply.Output.Rows where c.Values[1] == tbLookupId.Text select c).ToArray<ListOutputRow>();
 
-            lbID.Text = ExactMatch[0].Values[0].ToString();
-            lbName.Text = ExactMatch[0].Values[10].ToString();
-            lbAddressBlock.Text = ExactMatch[0].Values[4].ToString();
-            lbCity.Text = ExactMatch[0].Values[5].ToString();
-            lbState.Text = ExactMatch[0].Values[6].ToString();
-            lbCountry.Text = ExactMatch[0].Values[7].ToString();
-            lbPostCode.Text = ExactMatch[0].Values[8].ToString();
+            lbID.Text = lookup.Id;
+            lbName.Text = lookup.Name;
+            lbAddressBlock.Text = lookup.AddressBlock;
+            lbCity.Text = lookup.City;
+            lbState.Text = lookup.State;
+            lbCountry.Text = lookup.Country;
+            lbPostCode.Text = lookup.PostalCode;
             lbNickName.Text = LookupNickname(new Guid(lbID.Text));
             tbNewNickName.Text = lbNickName.Text;
-            ContextId = new Guid(ExactMatch[0].Values[0].ToString());
+            ContextId = new Guid(lookup.Id);
         }
         private string LookupNickname(Guid ConstituentId)
         {
@@ -90,34 +77,17 @@ namespace AppFxApi
             result = Nickname.ToArray<string>()[0];
             return result;
         }
-        private bool UpdateNickname()
+        private void UpdateNickname()
         {
             BioEdit ConstUpdate = new BioEdit(ContextId);
             ConstUpdate.URL = @"https://localhost/bbappfxSDKDev/Appfxwebservice.asmx?DatabaseName=BBInfinity";
             ConstUpdate.UserCredential = CredentialCache.DefaultCredentials;
             ConstUpdate.DBToUse = "BBInfinity";
             ConstUpdate.LoadDataForm();
-            ConstUpdate.FieldValueSet.SetValue("NICKNAME", tbNewNickName.Text);
+            ConstUpdate.Nickname = tbNewNickName.Text;
             ConstUpdate.SaveDataForm();
             SearchByLookupId();
-            //DataFormLoadRequest lReq = new DataFormLoadRequest();
-            //DataFormSaveRequest sReq = new DataFormSaveRequest();
-            //DataFormLoadReply lReply;
-            //DataFormSaveReply sReply;
-            //lReq.ClientAppInfo = GetRequestHeader();
-            //lReq.ContextRecordID = ContextId.ToString();
-            //lReq.RecordID = ContextId.ToString();
-            //lReq.FormID = new Guid("788ab947-26ed-40c4-865e-8fe29577e593");
-            //lReply = Service.DataFormLoad(lReq);
-            //sReq = new DataFormSaveRequest();
-            //sReq.ClientAppInfo = GetRequestHeader();
-            //sReq.ID = lReq.RecordID;
-            //sReq.ContextRecordID = lReq.ContextRecordID;
-            //sReq.DataFormItem = lReply.DataFormItem;
-            //sReq.DataFormItem.SetValue("NICKNAME", tbNewNickName.Text);
-            //sReq.FormID = lReq.FormID;
-            //sReply = Service.DataFormSave(sReq);
-            return false;
+            
 
 
         }

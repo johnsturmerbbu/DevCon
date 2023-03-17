@@ -96,7 +96,7 @@ namespace BBAppFxLib
             ReqObj = new SearchListLoadRequest();
             ReqObj.SearchListID = ObjectId;
         }
-        public void ExecuteSearch()
+        public virtual void ExecuteSearch()
         {
             ExecuteLoad();
             ReqObj.Filter = FormItem;
@@ -181,9 +181,9 @@ namespace BBAppFxLib
         {
             //LoadDataForm();
         }
-        public void SaveDataForm()
+        public virtual void SaveDataForm()
         {
-            FormItem.Values = FieldValueSet;
+
             FormItem.Values = FieldValueSet;
             sReqObj.DataFormItem = FormItem;
             sReqObj.ContextRecordID = ContextRecordId;
