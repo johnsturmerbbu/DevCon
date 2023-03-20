@@ -1,12 +1,9 @@
 ﻿using Blackbaud.AppFx.WebAPI.ServiceProxy;
 using Blackbaud.AppFx.XmlTypes.DataForms;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BBAppFxLib
 {
@@ -67,9 +64,9 @@ namespace BBAppFxLib
 
     }
 
-    public class FormFilterBase:BBAppFxBase
+    public class FormFilterBase : BBAppFxBase
     {
-        public DataFormFieldValueSet FieldValueSet { get;  set; }
+        public DataFormFieldValueSet FieldValueSet { get; set; }
         public DataFormItem FormItem { get; protected set; }
         public FormFilterBase(Guid ObjId) : base(ObjId)
         {
@@ -117,7 +114,7 @@ namespace BBAppFxLib
     public class SearchListBase : FormFilterBase
     {
         public SearchListLoadRequest ReqObj { get; set; }
-        public SearchListLoadReply ReplyObj { get;  set; }
+        public SearchListLoadReply ReplyObj { get; set; }
         public SearchListBase(Guid SearchListId)
             : base(SearchListId)
         {
