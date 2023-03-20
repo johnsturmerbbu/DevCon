@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BBAppFxLib
 {
+
     public class BBAppFxBase
     {
         public AppFxWebService Service { get; set; }
@@ -72,23 +74,11 @@ namespace BBAppFxLib
             FormItem.Values = FieldValueSet;
             InitAppFx();
         }
-        protected void PopulateFieldValues()
-        {
-            var props = this.GetType().GetProperties().Where<PropertyInfo>(prop => prop.GetCustomAttribute<FormFieldProperty>(true) != null);
-            PropertyInfo[] PropList = props.ToArray<PropertyInfo>();
-            foreach (PropertyInfo p in PropList)
-            {
-                if (p.GetCustomAttribute<DoNotDefaultField>() == null)
-                {
-                    if (p.PropertyType == typeof(String) && p.GetValue(this) == null)
-                        FieldValueSet.SetValue(p.Name, string.Empty);
-                    else
-                        FieldValueSet.SetValue(p.Name, p.GetValue(this));
-                }
-            }
-        }
 
     }
+
+
+
     public class ContextFormFilterBase : FormFilterBase
     {
         public string ContextRecordId { get; set; }
