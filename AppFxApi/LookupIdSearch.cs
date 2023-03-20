@@ -12,7 +12,9 @@ namespace AppFxApi
     public class LookupIdSearch:SearchListBase
     {
 
+        [FormFieldProperty]
         public bool ONLYPRIMARYADDRESS { get; set; }
+        [FormFieldProperty]
         public string CONSTITUENTQUICKFIND { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
@@ -27,8 +29,8 @@ namespace AppFxApi
 
         public override void ExecuteSearch()
         {
-            FieldValueSet.Add(new DataFormFieldValue("ONLYPRIMARYADDRESS", ONLYPRIMARYADDRESS));
-            FieldValueSet.Add(new DataFormFieldValue("CONSTITUENTQUICKFIND", CONSTITUENTQUICKFIND));
+            //FieldValueSet.Add(new DataFormFieldValue("ONLYPRIMARYADDRESS", ONLYPRIMARYADDRESS));
+            //FieldValueSet.Add(new DataFormFieldValue("CONSTITUENTQUICKFIND", CONSTITUENTQUICKFIND));
             base.ExecuteSearch();
             var ExactMatch = (from c in ReplyObj.Output.Rows where c.Values[1] == CONSTITUENTQUICKFIND select c).ToArray<ListOutputRow>();
             Id = ExactMatch[0].Values[0].ToString();

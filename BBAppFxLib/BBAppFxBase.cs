@@ -11,6 +11,13 @@ using System.Threading.Tasks;
 namespace BBAppFxLib
 {
 
+    public class DoNotDefaultField : Attribute
+    {
+    }
+
+    public class FormFieldProperty : Attribute
+    {
+    }
     public class BBAppFxBase
     {
         public AppFxWebService Service { get; set; }
@@ -71,12 +78,28 @@ namespace BBAppFxLib
         }
         public void ExecuteLoad()
         {
+            PopulateFieldValues();
             FormItem.Values = FieldValueSet;
             InitAppFx();
         }
+        protected void PopulateFieldValues()
+        {
+            var props = this.GetType().GetProperties().Where<PropertyInfo>(prop => prop.GetCustomAttribute<FormFieldProperty>(true) != null);
+            PropertyInfo[] PropList = props.ToArray<PropertyInfo>();
+            foreach (PropertyInfo p in PropList)
+            {
+                if (p.GetCustomAttribute<DoNotDefaultField>() == null)
+                {
+                    if (p.PropertyType == typeof(String) && p.GetValue(this) == null)
+                        FieldValueSet.SetValue(p.Name, string.Empty);
+                    else
+                        FieldValueSet.SetValue(p.Name, p.GetValue(this));
+                }
+            }
+        }
+
 
     }
-
 
 
     public class ContextFormFilterBase : FormFilterBase
@@ -158,6 +181,15 @@ namespace BBAppFxLib
             ReqObj.FormID = ObjectId;
 
         }
+        protected void PopulateObjectProperties()
+        {
+            foreach (DataFormFieldValue v in ReplyObj.DataFormItem.Values)
+            {
+                if (this.GetType().GetProperty(v.ID) != null)
+                    this.GetType().GetProperty(v.ID).SetValue(this, v.Value);
+            }
+        }
+
         public virtual void LoadDataForm()
         {
 
@@ -168,6 +200,7 @@ namespace BBAppFxLib
             ReplyObj = Service.DataFormLoad(ReqObj);
             FormItem = ReplyObj.DataFormItem;
             FieldValueSet = FormItem.Values;
+            PopulateObjectProperties();
 
         }
     }
@@ -189,6 +222,7 @@ namespace BBAppFxLib
         public virtual void SaveDataForm()
         {
 
+            PopulateFieldValues();
             FormItem.Values = FieldValueSet;
             sReqObj.DataFormItem = FormItem;
             sReqObj.ContextRecordID = ContextRecordId;
@@ -202,6 +236,7 @@ namespace BBAppFxLib
             sReqObj = new DataFormSaveRequest();
             base.LoadDataForm();
             sReqObj.DataFormItem = FormItem;
+            PopulateFieldValues();
 
         }
     }

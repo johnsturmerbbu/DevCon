@@ -84,7 +84,7 @@ namespace AppFxApi
             ConstUpdate.UserCredential = CredentialCache.DefaultCredentials;
             ConstUpdate.DBToUse = "BBInfinity";
             ConstUpdate.LoadDataForm();
-            ConstUpdate.Nickname = tbNewNickName.Text;
+            ConstUpdate.NICKNAME = tbNewNickName.Text;
             ConstUpdate.SaveDataForm();
             SearchByLookupId();
             
